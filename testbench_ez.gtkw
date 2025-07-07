@@ -1,0 +1,36 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Mon Jul  7 07:28:59 2025
+[*]
+[dumpfile] "/home/eda/Project/YosysHQ---picorv32/testbench.vcd"
+[dumpfile_mtime] "Mon Jul  7 07:09:48 2025"
+[dumpfile_size] 269837
+[savefile] "/home/eda/Project/YosysHQ---picorv32/testbench_ez.gtkw"
+[timestart] 0
+[size] 1920 1025
+[pos] -51 -51
+*-20.638252 252000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] testbench.
+[sst_width] 371
+[signals_width] 190
+[sst_expanded] 1
+[sst_vpaned_height] 636
+@28
+testbench.uut.clk
+testbench.uut.resetn
+testbench.uut.trap
+testbench.uut.mem_valid
+testbench.uut.mem_instr
+testbench.uut.mem_ready
+@22
+testbench.uut.mem_addr[31:0]
+testbench.uut.mem_wdata[31:0]
+testbench.uut.mem_wstrb[3:0]
+testbench.uut.mem_rdata[31:0]
+@200
+-
+@22
+testbench.uut.reg_op2[31:0]
+testbench.uut.mem_rdata_word[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
