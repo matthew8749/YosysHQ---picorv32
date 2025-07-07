@@ -18,6 +18,12 @@ module testbench;
 		if ($test$plusargs("vcd")) begin
 			$dumpfile("testbench.vcd");
 			$dumpvars(0, testbench);
+      $dumpvars(0, memory[0]);
+      $dumpvars(0, memory[1]);
+      $dumpvars(0, memory[2]);
+      $dumpvars(0, memory[3]);
+      $dumpvars(0, memory[4]);
+      $dumpvars(0, memory[5]);
 		end
 		repeat (100) @(posedge clk);
 		resetn <= 1;
@@ -54,19 +60,19 @@ module testbench;
 		.mem_ready   (mem_ready  ),
 		.mem_addr    (mem_addr   ),
 		.mem_wdata   (mem_wdata  ),
-		.mem_wstrb   (mem_wstrb  ),
+		.mem_wstrb   (mem_wstrb  ),   //Write Strobe
 		.mem_rdata   (mem_rdata  )
 	);
 
 	reg [31:0] memory [0:255];
 
 	initial begin
-		memory[0] = 32'h 3fc00093; //       li      x1,1020
-		memory[1] = 32'h 0000a023; //       sw      x0,0(x1)
-		memory[2] = 32'h 0000a103; // loop: lw      x2,0(x1)
-		memory[3] = 32'h 00110113; //       addi    x2,x2,1
-		memory[4] = 32'h 0020a023; //       sw      x2,0(x1)
-		memory[5] = 32'h ff5ff06f; //       j       <loop>
+    memory[0] = 32'h 3fc00093; //       li      x1,1020           32'b 0011_1111_1100_ 0000_0 000_ 0000_1 001_0011
+    memory[1] = 32'h 0000a023; //       sw      x0,0(x1)          32'b 0000_0000_0000_0000_1010_0000_0010_0011
+    memory[2] = 32'h 0000a103; // loop: lw      x2,0(x1)          32'b 0000_0000_0000_0000_1010_0001_0000_0011
+    memory[3] = 32'h 00110113; //       addi    x2,x2,1           32'b 0000_0000_0001_0001_0000_0001_0001_0011
+    memory[4] = 32'h 0020a023; //       sw      x2,0(x1)          32'b 0000_0000_0010_0000_1010_0000_0010_0011
+    memory[5] = 32'h ff5ff06f; //       j       <loop>            32'b 1111_1111_0101_1111_1111_0000_0110_1111
 	end
 
 	always @(posedge clk) begin
