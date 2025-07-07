@@ -67,32 +67,32 @@
  ***************************************************************/
 
 module picorv32 #(
-	parameter [ 0:0] ENABLE_COUNTERS = 1,
-	parameter [ 0:0] ENABLE_COUNTERS64 = 1,
-	parameter [ 0:0] ENABLE_REGS_16_31 = 1,
-	parameter [ 0:0] ENABLE_REGS_DUALPORT = 1,
-	parameter [ 0:0] LATCHED_MEM_RDATA = 0,
-	parameter [ 0:0] TWO_STAGE_SHIFT = 1,
-	parameter [ 0:0] BARREL_SHIFTER = 0,
-	parameter [ 0:0] TWO_CYCLE_COMPARE = 0,
-	parameter [ 0:0] TWO_CYCLE_ALU = 0,
-	parameter [ 0:0] COMPRESSED_ISA = 0,
-	parameter [ 0:0] CATCH_MISALIGN = 1,
-	parameter [ 0:0] CATCH_ILLINSN = 1,
-	parameter [ 0:0] ENABLE_PCPI = 0,
-	parameter [ 0:0] ENABLE_MUL = 0,
-	parameter [ 0:0] ENABLE_FAST_MUL = 0,
-	parameter [ 0:0] ENABLE_DIV = 0,
-	parameter [ 0:0] ENABLE_IRQ = 0,
-	parameter [ 0:0] ENABLE_IRQ_QREGS = 1,
-	parameter [ 0:0] ENABLE_IRQ_TIMER = 1,
-	parameter [ 0:0] ENABLE_TRACE = 0,
-	parameter [ 0:0] REGS_INIT_ZERO = 0,
-	parameter [31:0] MASKED_IRQ = 32'h 0000_0000,
-	parameter [31:0] LATCHED_IRQ = 32'h ffff_ffff,
-	parameter [31:0] PROGADDR_RESET = 32'h 0000_0000,
-	parameter [31:0] PROGADDR_IRQ = 32'h 0000_0010,
-	parameter [31:0] STACKADDR = 32'h ffff_ffff
+  parameter [ 0:0] ENABLE_COUNTERS      = 1,
+  parameter [ 0:0] ENABLE_COUNTERS64    = 1,
+  parameter [ 0:0] ENABLE_REGS_16_31    = 1,
+  parameter [ 0:0] ENABLE_REGS_DUALPORT = 1,
+  parameter [ 0:0] LATCHED_MEM_RDATA    = 0,
+  parameter [ 0:0] TWO_STAGE_SHIFT      = 1,
+  parameter [ 0:0] BARREL_SHIFTER       = 0,
+  parameter [ 0:0] TWO_CYCLE_COMPARE    = 0,
+  parameter [ 0:0] TWO_CYCLE_ALU        = 0,
+  parameter [ 0:0] COMPRESSED_ISA       = 0,
+  parameter [ 0:0] CATCH_MISALIGN       = 1,
+  parameter [ 0:0] CATCH_ILLINSN        = 1,
+  parameter [ 0:0] ENABLE_PCPI          = 0,
+  parameter [ 0:0] ENABLE_MUL           = 0,
+  parameter [ 0:0] ENABLE_FAST_MUL      = 0,
+  parameter [ 0:0] ENABLE_DIV           = 0,
+  parameter [ 0:0] ENABLE_IRQ           = 0,
+  parameter [ 0:0] ENABLE_IRQ_QREGS     = 1,
+  parameter [ 0:0] ENABLE_IRQ_TIMER     = 1,
+  parameter [ 0:0] ENABLE_TRACE         = 0,
+  parameter [ 0:0] REGS_INIT_ZERO       = 0,
+  parameter [31:0] MASKED_IRQ           = 32'h 0000_0000,
+  parameter [31:0] LATCHED_IRQ          = 32'h ffff_ffff,
+  parameter [31:0] PROGADDR_RESET       = 32'h 0000_0000,
+  parameter [31:0] PROGADDR_IRQ         = 32'h 0000_0010,
+  parameter [31:0] STACKADDR            = 32'h ffff_ffff
 ) (
 	input clk, resetn,
 	output reg trap,
@@ -179,9 +179,11 @@ module picorv32 #(
 	localparam [35:0] TRACE_ADDR   = {4'b 0010, 32'b 0};
 	localparam [35:0] TRACE_IRQ    = {4'b 1000, 32'b 0};
 
-	reg [63:0] count_cycle, count_instr;
-	reg [31:0] reg_pc, reg_next_pc, reg_op1, reg_op2, reg_out;
-	reg [4:0] reg_sh;
+  reg         [63 : 0]            count_cycle;
+	reg         [63 : 0]            count_instr;
+	reg         [31:0] reg_pc, reg_next_pc, reg_op1, reg_op2, reg_out;
+
+  reg [4:0] reg_sh;
 
 	reg [31:0] next_insn_opcode;
 	reg [31:0] dbg_insn_opcode;
