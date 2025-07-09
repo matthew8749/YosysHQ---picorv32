@@ -4,8 +4,8 @@ PicoRV32 - A Size-Optimized RISC-V CPU
 ======================================
 
 PicoRV32 is a CPU core that implements the [RISC-V RV32IMC Instruction Set](http://riscv.org/).
-It can be configured as RV32E, RV32I, RV32IC, RV32IM, or RV32IMC core, and optionally
-contains a built-in interrupt controller.
+It can be configured as RV32E, RV32I, RV32IC, RV32IM, or RV32IMC core, and *optionally
+contains a built-in interrupt controller.*
 
 Tools (gcc, binutils, etc..) can be obtained via the [RISC-V Website](https://riscv.org/software-status/).
 The examples bundled with PicoRV32 expect various RV32 toolchains to be installed in `/opt/riscv32i[m][c]`. See
@@ -108,8 +108,8 @@ A basic test environment. Run `make test` to run the standard test bench (`testb
 in the standard configurations. There are other test benches and configurations. See
 the `test_*` make target in the Makefile for details.
 
-Run `make test_ez` to run `testbench_ez.v`, a very simple test bench that does
-not require an external firmware .hex file. This can be useful in environments
+Run `make test_ez` to run `testbench_ez.v`, *a very simple test bench that does
+not require an external firmware* .hex file. This can be useful in environments
 where the RISC-V compiler toolchain is not available.
 
 *Note: The test bench is using Icarus Verilog. However, Icarus Verilog 0.9.7
