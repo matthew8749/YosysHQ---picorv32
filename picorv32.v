@@ -727,7 +727,7 @@ module picorv32 #(
   `FORMAL_KEEP reg                dbg_rs1val_valid;
   `FORMAL_KEEP reg                dbg_rs2val_valid;
 
-  always @(*) begin
+  always @* begin
     new_ascii_instr = "";
 
     if (instr_lui)      new_ascii_instr = "lui";
@@ -1205,14 +1205,14 @@ module picorv32 #(
              //╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝
 
 
-  localparam  cpu_state_ldmem     = 8'b00000001;
-  localparam  cpu_state_stmem     = 8'b00000010;
-  localparam  cpu_state_shift     = 8'b00000100;
-  localparam  cpu_state_exec      = 8'b00001000;
-  localparam  cpu_state_ld_rs2    = 8'b00010000;
-  localparam  cpu_state_ld_rs1    = 8'b00100000;
-  localparam  cpu_state_fetch     = 8'b01000000;
   localparam  cpu_state_trap      = 8'b10000000;       // 例外處理
+  localparam  cpu_state_fetch     = 8'b01000000;
+  localparam  cpu_state_ld_rs1    = 8'b00100000;
+  localparam  cpu_state_ld_rs2    = 8'b00010000;
+  localparam  cpu_state_exec      = 8'b00001000;
+  localparam  cpu_state_shift     = 8'b00000100;
+  localparam  cpu_state_stmem     = 8'b00000010;
+  localparam  cpu_state_ldmem     = 8'b00000001;
 
   reg         [ 7 : 0 ]           cpu_state;
   reg         [ 1 : 0 ]           irq_state;
@@ -1460,15 +1460,13 @@ module picorv32 #(
       dbg_rs2val_valid <= 0;
     end
 
-    if ( WITH_PCPI && CATCH_ILLINSN ) begin
+    if (WITH_PCPI && CATCH_ILLINSN) begin
       if (resetn && pcpi_valid && !pcpi_int_wait) begin
-        if ( pcpi_timeout_counter) begin
+        if (pcpi_timeout_counter)
           pcpi_timeout_counter <= pcpi_timeout_counter - 1;
-        end else begin
-          pcpi_timeout_counter <= ~0;
-          pcpi_timeout <= !pcpi_timeout_counter;
-        end
-
+      end else begin
+        pcpi_timeout_counter <= ~0;
+        pcpi_timeout         <= !pcpi_timeout_counter;
       end
     end
 
@@ -1514,8 +1512,7 @@ module picorv32 #(
         irq_active                <= 0;
         irq_delay                 <= 0;
         irq_mask                  <= ~0;
-        //next_irq_pending         = 0;
-        next_irq_pending          <= 0;     // @@change
+        next_irq_pending          = 0;
         irq_state                 <= 0;
         eoi                       <= 0;
         timer                     <= 0;
