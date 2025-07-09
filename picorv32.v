@@ -94,108 +94,109 @@ module picorv32 #(
   parameter [31:0] PROGADDR_IRQ         = 32'h 0000_0010,
   parameter [31:0] STACKADDR            = 32'h ffff_ffff
 ) (
-  input clk, resetn,
-  output reg trap,
+  input                           clk,
+  input                           resetn,
+  output reg                      trap,
 
-  output reg        mem_valid,
-  output reg        mem_instr,
-  input             mem_ready,
+  output reg                      mem_valid,
+  output reg                      mem_instr,
+  input                           mem_ready,
 
-  output reg [31:0] mem_addr,
-  output reg [31:0] mem_wdata,
-  output reg [ 3:0] mem_wstrb,
-  input      [31:0] mem_rdata,
+  output reg  [ 31 : 0 ]          mem_addr,
+  output reg  [ 31 : 0 ]          mem_wdata,
+  output reg  [  3 : 0 ]          mem_wstrb,
+  input       [ 31 : 0 ]          mem_rdata,
 
   // Look-Ahead Interface
-  output            mem_la_read,
-  output            mem_la_write,
-  output     [31:0] mem_la_addr,
-  output reg [31:0] mem_la_wdata,
-  output reg [ 3:0] mem_la_wstrb,
+  output                          mem_la_read,
+  output                          mem_la_write,
+  output      [ 31 : 0 ]          mem_la_addr,
+  output reg  [ 31 : 0 ]          mem_la_wdata,
+  output reg  [  3 : 0 ]          mem_la_wstrb,
 
   // Pico Co-Processor Interface (PCPI)
-  output reg        pcpi_valid,
-  output reg [31:0] pcpi_insn,
-  output     [31:0] pcpi_rs1,
-  output     [31:0] pcpi_rs2,
-  input             pcpi_wr,
-  input      [31:0] pcpi_rd,
-  input             pcpi_wait,
-  input             pcpi_ready,
+  output reg                      pcpi_valid,
+  output reg  [ 31 : 0 ]          pcpi_insn,
+  output      [ 31 : 0 ]          pcpi_rs1,
+  output      [ 31 : 0 ]          pcpi_rs2,
+  input                           pcpi_wr,
+  input       [ 31 : 0 ]          pcpi_rd,
+  input                           pcpi_wait,
+  input                           pcpi_ready,
 
   // IRQ Interface
-  input      [31:0] irq,
-  output reg [31:0] eoi,
+  input       [ 31 : 0 ]          irq,
+  output reg  [ 31 : 0 ]          eoi,
 
 `ifdef RISCV_FORMAL
-  output reg        rvfi_valid,
-  output reg [63:0] rvfi_order,
-  output reg [31:0] rvfi_insn,
-  output reg        rvfi_trap,
-  output reg        rvfi_halt,
-  output reg        rvfi_intr,
-  output reg [ 1:0] rvfi_mode,
-  output reg [ 1:0] rvfi_ixl,
-  output reg [ 4:0] rvfi_rs1_addr,
-  output reg [ 4:0] rvfi_rs2_addr,
-  output reg [31:0] rvfi_rs1_rdata,
-  output reg [31:0] rvfi_rs2_rdata,
-  output reg [ 4:0] rvfi_rd_addr,
-  output reg [31:0] rvfi_rd_wdata,
-  output reg [31:0] rvfi_pc_rdata,
-  output reg [31:0] rvfi_pc_wdata,
-  output reg [31:0] rvfi_mem_addr,
-  output reg [ 3:0] rvfi_mem_rmask,
-  output reg [ 3:0] rvfi_mem_wmask,
-  output reg [31:0] rvfi_mem_rdata,
-  output reg [31:0] rvfi_mem_wdata,
+  output reg                      rvfi_valid,
+  output reg  [ 63 : 0 ]          rvfi_order,
+  output reg  [ 31 : 0 ]          rvfi_insn,
+  output reg                      rvfi_trap,
+  output reg                      rvfi_halt,
+  output reg                      rvfi_intr,
+  output reg  [  1 : 0 ]          rvfi_mode,
+  output reg  [  1 : 0 ]          rvfi_ixl,
+  output reg  [  4 : 0 ]          rvfi_rs1_addr,
+  output reg  [  4 : 0 ]          rvfi_rs2_addr,
+  output reg  [ 31 : 0 ]          rvfi_rs1_rdata,
+  output reg  [ 31 : 0 ]          rvfi_rs2_rdata,
+  output reg  [  4 : 0 ]          rvfi_rd_addr,
+  output reg  [ 31 : 0 ]          rvfi_rd_wdata,
+  output reg  [ 31 : 0 ]          rvfi_pc_rdata,
+  output reg  [ 31 : 0 ]          rvfi_pc_wdata,
+  output reg  [ 31 : 0 ]          rvfi_mem_addr,
+  output reg  [  3 : 0 ]          rvfi_mem_rmask,
+  output reg  [  3 : 0 ]          rvfi_mem_wmask,
+  output reg  [ 31 : 0 ]          rvfi_mem_rdata,
+  output reg  [ 31 : 0 ]          rvfi_mem_wdata,
 
-  output reg [63:0] rvfi_csr_mcycle_rmask,
-  output reg [63:0] rvfi_csr_mcycle_wmask,
-  output reg [63:0] rvfi_csr_mcycle_rdata,
-  output reg [63:0] rvfi_csr_mcycle_wdata,
+  output reg  [ 63 : 0 ]          rvfi_csr_mcycle_rmask,
+  output reg  [ 63 : 0 ]          rvfi_csr_mcycle_wmask,
+  output reg  [ 63 : 0 ]          rvfi_csr_mcycle_rdata,
+  output reg  [ 63 : 0 ]          rvfi_csr_mcycle_wdata,
 
-  output reg [63:0] rvfi_csr_minstret_rmask,
-  output reg [63:0] rvfi_csr_minstret_wmask,
-  output reg [63:0] rvfi_csr_minstret_rdata,
-  output reg [63:0] rvfi_csr_minstret_wdata,
+  output reg  [ 63 : 0 ]          rvfi_csr_minstret_rmask,
+  output reg  [ 63 : 0 ]          rvfi_csr_minstret_wmask,
+  output reg  [ 63 : 0 ]          rvfi_csr_minstret_rdata,
+  output reg  [ 63 : 0 ]          rvfi_csr_minstret_wdata,
 `endif
 
   // Trace Interface
-  output reg        trace_valid,
-  output reg [35:0] trace_data
+  output reg                      trace_valid,
+  output reg  [ 35 : 0 ]          trace_data
 );
-  localparam integer irq_timer = 0;
-  localparam integer irq_ebreak = 1;
-  localparam integer irq_buserror = 2;
+  localparam integer irq_timer      = 0;
+  localparam integer irq_ebreak     = 1;
+  localparam integer irq_buserror   = 2;
 
   localparam integer irqregs_offset = ENABLE_REGS_16_31 ? 32 : 16;
-  localparam integer regfile_size = (ENABLE_REGS_16_31 ? 32 : 16) + 4*ENABLE_IRQ*ENABLE_IRQ_QREGS;
-  localparam integer regindex_bits = (ENABLE_REGS_16_31 ? 5 : 4) + ENABLE_IRQ*ENABLE_IRQ_QREGS;
+  localparam integer regfile_size   = (ENABLE_REGS_16_31 ? 32 : 16) + 4*ENABLE_IRQ*ENABLE_IRQ_QREGS;
+  localparam integer regindex_bits  = (ENABLE_REGS_16_31 ? 5 : 4) + ENABLE_IRQ*ENABLE_IRQ_QREGS;
 
-  localparam WITH_PCPI = ENABLE_PCPI || ENABLE_MUL || ENABLE_FAST_MUL || ENABLE_DIV;
+  localparam WITH_PCPI              = ENABLE_PCPI || ENABLE_MUL || ENABLE_FAST_MUL || ENABLE_DIV;
 
-  localparam [35:0] TRACE_BRANCH = {4'b 0001, 32'b 0};
-  localparam [35:0] TRACE_ADDR   = {4'b 0010, 32'b 0};
-  localparam [35:0] TRACE_IRQ    = {4'b 1000, 32'b 0};
+  localparam [35:0] TRACE_BRANCH    = {4'b 0001, 32'b 0};
+  localparam [35:0] TRACE_ADDR      = {4'b 0010, 32'b 0};
+  localparam [35:0] TRACE_IRQ       = {4'b 1000, 32'b 0};
 
-  reg         [63 : 0]            count_cycle;
-  reg         [63 : 0]            count_instr;
-  reg         [31:0] reg_pc, reg_next_pc, reg_op1, reg_op2, reg_out;
+  reg  [ 63 : 0 ]                 count_cycle;
+  reg  [ 63 : 0 ]                 count_instr;
+  reg  [ 31 : 0 ]                 reg_pc, reg_next_pc, reg_op1, reg_op2, reg_out;
 
-  reg [4:0] reg_sh;
+  reg  [ 4  : 0 ]                 reg_sh;
 
-  reg [31:0] next_insn_opcode;
-  reg [31:0] dbg_insn_opcode;
-  reg [31:0] dbg_insn_addr;
+  reg  [ 31 : 0 ]                 next_insn_opcode;
+  reg  [ 31 : 0 ]                 dbg_insn_opcode;
+  reg  [ 31 : 0 ]                 dbg_insn_addr;
 
-  wire dbg_mem_valid = mem_valid;
-  wire dbg_mem_instr = mem_instr;
-  wire dbg_mem_ready = mem_ready;
-  wire [31:0] dbg_mem_addr  = mem_addr;
-  wire [31:0] dbg_mem_wdata = mem_wdata;
-  wire [ 3:0] dbg_mem_wstrb = mem_wstrb;
-  wire [31:0] dbg_mem_rdata = mem_rdata;
+  wire                            dbg_mem_valid = mem_valid;
+  wire                            dbg_mem_instr = mem_instr;
+  wire                            dbg_mem_ready = mem_ready;
+  wire [ 31 : 0 ]                 dbg_mem_addr  = mem_addr;
+  wire [ 31 : 0 ]                 dbg_mem_wdata = mem_wdata;
+  wire [ 3  : 0 ]                 dbg_mem_wstrb = mem_wstrb;
+  wire [ 31 : 0 ]                 dbg_mem_rdata = mem_rdata;
 
   assign pcpi_rs1 = reg_op1;
   assign pcpi_rs2 = reg_op2;
@@ -1213,10 +1214,10 @@ module picorv32 #(
   localparam cpu_state_fetch  = 8'b01000000;
   localparam cpu_state_trap   = 8'b10000000;                                              // 例外處理
 
-  reg [7:0] cpu_state;
-  reg [1:0] irq_state;
+  reg         [ 7 : 0 ]           cpu_state;
+  reg         [ 1 : 0 ]           irq_state;
 
-  `FORMAL_KEEP reg [127:0] dbg_ascii_state;
+  `FORMAL_KEEP reg [ 127 : 0 ]    dbg_ascii_state;
 
   always @* begin
     dbg_ascii_state = "";
@@ -1230,19 +1231,19 @@ module picorv32 #(
     if (cpu_state == cpu_state_ldmem)  dbg_ascii_state = "ldmem";
   end
 
-  reg set_mem_do_rinst;
-  reg set_mem_do_rdata;
-  reg set_mem_do_wdata;
+  reg                             set_mem_do_rinst;
+  reg                             set_mem_do_rdata;
+  reg                             set_mem_do_wdata;
 
-  reg latched_store;
-  reg latched_stalu;
-  reg latched_branch;
-  reg latched_compr;
-  reg latched_trace;
-  reg latched_is_lu;
-  reg latched_is_lh;
-  reg latched_is_lb;
-  reg [regindex_bits-1:0] latched_rd;
+  reg                             latched_store;
+  reg                             latched_stalu;
+  reg                             latched_branch;
+  reg                             latched_compr;
+  reg                             latched_trace;
+  reg                             latched_is_lu;
+  reg                             latched_is_lh;
+  reg                             latched_is_lb;
+  reg   [ regindex_bits-1 : 0 ]   latched_rd;
 
   reg [31:0] current_pc;
   assign next_pc = latched_store && latched_branch ? reg_out & ~1 : reg_next_pc;
