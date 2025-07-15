@@ -33,9 +33,9 @@ module testbench #(
 		$finish;
 	end
 
-	wire trace_valid;
-	wire [35:0] trace_data;
-	integer trace_file;
+	wire                  trace_valid;
+	wire      [ 35: 0]    trace_data;
+	integer               trace_file;
 
 	initial begin
 		if ($test$plusargs("trace")) begin
@@ -66,13 +66,13 @@ endmodule
 
 module picorv32_wrapper #(
 	parameter AXI_TEST = 0,
-	parameter VERBOSE = 0
+	parameter VERBOSE  = 0
 ) (
-	input clk,
-	input resetn,
-	output trap,
-	output trace_valid,
-	output [35:0] trace_data
+	input                           clk,
+	input                           resetn,
+	output                          trap,
+	output                          trace_valid,
+	output      [ 35: 0]            trace_data
 );
 	wire tests_passed;
 	reg [31:0] irq = 0;
@@ -86,56 +86,56 @@ module picorv32_wrapper #(
 		irq[5] = &count_cycle[15:0];
 	end
 
-	wire        mem_axi_awvalid;
-	wire        mem_axi_awready;
-	wire [31:0] mem_axi_awaddr;
-	wire [ 2:0] mem_axi_awprot;
+	wire                            mem_axi_awvalid;
+	wire                            mem_axi_awready;
+	wire        [ 31: 0]            mem_axi_awaddr;
+	wire        [  2: 0]            mem_axi_awprot;
 
-	wire        mem_axi_wvalid;
-	wire        mem_axi_wready;
-	wire [31:0] mem_axi_wdata;
-	wire [ 3:0] mem_axi_wstrb;
+	wire                            mem_axi_wvalid;
+	wire                            mem_axi_wready;
+	wire        [ 31: 0]            mem_axi_wdata;
+	wire        [  3: 0]            mem_axi_wstrb;
 
-	wire        mem_axi_bvalid;
-	wire        mem_axi_bready;
+	wire                            mem_axi_bvalid;
+	wire                            mem_axi_bready;
 
-	wire        mem_axi_arvalid;
-	wire        mem_axi_arready;
-	wire [31:0] mem_axi_araddr;
-	wire [ 2:0] mem_axi_arprot;
+	wire                            mem_axi_arvalid;
+	wire                            mem_axi_arready;
+	wire        [ 31: 0]            mem_axi_araddr;
+	wire        [  2: 0]            mem_axi_arprot;
 
-	wire        mem_axi_rvalid;
-	wire        mem_axi_rready;
-	wire [31:0] mem_axi_rdata;
+	wire                            mem_axi_rvalid;
+	wire                            mem_axi_rready;
+	wire        [ 31: 0]            mem_axi_rdata;
 
 	axi4_memory #(
-		.AXI_TEST (AXI_TEST),
-		.VERBOSE  (VERBOSE)
+		.AXI_TEST        ( AXI_TEST        ),
+		.VERBOSE         ( VERBOSE         )
 	) mem (
-		.clk             (clk             ),
-		.mem_axi_awvalid (mem_axi_awvalid ),
-		.mem_axi_awready (mem_axi_awready ),
-		.mem_axi_awaddr  (mem_axi_awaddr  ),
-		.mem_axi_awprot  (mem_axi_awprot  ),
+		.clk             ( clk             ),
+		.mem_axi_awvalid ( mem_axi_awvalid ),
+		.mem_axi_awready ( mem_axi_awready ),
+		.mem_axi_awaddr  ( mem_axi_awaddr  ),
+		.mem_axi_awprot  ( mem_axi_awprot  ),
 
-		.mem_axi_wvalid  (mem_axi_wvalid  ),
-		.mem_axi_wready  (mem_axi_wready  ),
-		.mem_axi_wdata   (mem_axi_wdata   ),
-		.mem_axi_wstrb   (mem_axi_wstrb   ),
+		.mem_axi_wvalid  ( mem_axi_wvalid  ),
+		.mem_axi_wready  ( mem_axi_wready  ),
+		.mem_axi_wdata   ( mem_axi_wdata   ),
+		.mem_axi_wstrb   ( mem_axi_wstrb   ),
 
-		.mem_axi_bvalid  (mem_axi_bvalid  ),
-		.mem_axi_bready  (mem_axi_bready  ),
+		.mem_axi_bvalid  ( mem_axi_bvalid  ),
+		.mem_axi_bready  ( mem_axi_bready  ),
 
-		.mem_axi_arvalid (mem_axi_arvalid ),
-		.mem_axi_arready (mem_axi_arready ),
-		.mem_axi_araddr  (mem_axi_araddr  ),
-		.mem_axi_arprot  (mem_axi_arprot  ),
+		.mem_axi_arvalid ( mem_axi_arvalid ),
+		.mem_axi_arready ( mem_axi_arready ),
+		.mem_axi_araddr  ( mem_axi_araddr  ),
+		.mem_axi_arprot  ( mem_axi_arprot  ),
 
-		.mem_axi_rvalid  (mem_axi_rvalid  ),
-		.mem_axi_rready  (mem_axi_rready  ),
-		.mem_axi_rdata   (mem_axi_rdata   ),
+		.mem_axi_rvalid  ( mem_axi_rvalid  ),
+		.mem_axi_rready  ( mem_axi_rready  ),
+		.mem_axi_rdata   ( mem_axi_rdata   ),
 
-		.tests_passed    (tests_passed    )
+		.tests_passed    ( tests_passed    )
 	);
 
 `ifdef RISCV_FORMAL
@@ -173,7 +173,7 @@ module picorv32_wrapper #(
 		.ENABLE_IRQ(1),
 		.ENABLE_TRACE(1)
 `endif
-	) uut (
+  ) uut (
 		.clk            (clk            ),
 		.resetn         (resetn         ),
 		.trap           (trap           ),
@@ -314,11 +314,11 @@ module axi4_memory #(
 
 	initial begin
 		mem_axi_awready = 0;
-		mem_axi_wready = 0;
-		mem_axi_bvalid = 0;
+		mem_axi_wready  = 0;
+		mem_axi_bvalid  = 0;
 		mem_axi_arready = 0;
-		mem_axi_rvalid = 0;
-		tests_passed = 0;
+		mem_axi_rvalid  = 0;
+		tests_passed    = 0;
 	end
 
 	reg [63:0] xorshift64_state = 64'd88172645463325252;
@@ -359,33 +359,33 @@ module axi4_memory #(
 
 	task handle_axi_arvalid; begin
 		mem_axi_arready <= 1;
-		latched_raddr = mem_axi_araddr;
-		latched_rinsn = mem_axi_arprot[2];
+		latched_raddr    = mem_axi_araddr;
+		latched_rinsn    = mem_axi_arprot[2];
 		latched_raddr_en = 1;
-		fast_raddr <= 1;
+		fast_raddr      <= 1;
 	end endtask
 
 	task handle_axi_awvalid; begin
 		mem_axi_awready <= 1;
-		latched_waddr = mem_axi_awaddr;
+		latched_waddr    = mem_axi_awaddr;
 		latched_waddr_en = 1;
-		fast_waddr <= 1;
+		fast_waddr      <= 1;
 	end endtask
 
 	task handle_axi_wvalid; begin
-		mem_axi_wready <= 1;
-		latched_wdata = mem_axi_wdata;
-		latched_wstrb = mem_axi_wstrb;
+		mem_axi_wready  <= 1;
+		latched_wdata    = mem_axi_wdata;
+		latched_wstrb    = mem_axi_wstrb;
 		latched_wdata_en = 1;
-		fast_wdata <= 1;
+		fast_wdata      <= 1;
 	end endtask
 
 	task handle_axi_rvalid; begin
 		if (verbose)
 			$display("RD: ADDR=%08x DATA=%08x%s", latched_raddr, memory[latched_raddr >> 2], latched_rinsn ? " INSN" : "");
 		if (latched_raddr < 128*1024) begin
-			mem_axi_rdata <= memory[latched_raddr >> 2];
-			mem_axi_rvalid <= 1;
+			mem_axi_rdata   <= memory[latched_raddr >> 2];
+			mem_axi_rvalid  <= 1;
 			latched_raddr_en = 0;
 		end else begin
 			$display("OUT-OF-BOUNDS MEMORY READ FROM %08x", latched_raddr);
